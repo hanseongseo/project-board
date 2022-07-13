@@ -2,6 +2,7 @@ package com.personal.board.repository;
 
 import com.personal.board.config.JpaConfig;
 import com.personal.board.domain.Article;
+import com.personal.board.domain.ArticleComment;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,7 +13,7 @@ import org.springframework.context.annotation.Import;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
 
 @DisplayName("JPA 연결 테스트")
 @Import(JpaConfig.class)
@@ -23,7 +24,8 @@ class JpaRepositoryTest {
     private final ArticleCommentRepository articleCommentRepository;
 
     public JpaRepositoryTest(
-            @Autowired ArticleRepository articleRepository, @Autowired ArticleCommentRepository articleCommentRepository) {
+            @Autowired ArticleRepository articleRepository,
+            @Autowired ArticleCommentRepository articleCommentRepository) {
         this.articleRepository = articleRepository;
         this.articleCommentRepository = articleCommentRepository;
     }
@@ -35,10 +37,23 @@ class JpaRepositoryTest {
         List<Article> articles = articleRepository.findAll();
 
         //  when
-        assertThat(articles).isNotNull().hasSize(0);
+        assertThat(articles).isNotNull().hasSize(1);
 
         //  then
     }
+
+//    @DisplayName("insert test")
+//    @Test
+//    void givenTestData_whenInsert_thenWorksFine() {
+//        //  given
+//        long previousCount = articleRepository.count();
+//
+//        //  when
+//        Article savedArticle = articleRepository.save(Article.of("new title", "new content", "#spring"));
+//
+//        //  then
+//        assertThat(articleRepository.count()).isEqualTo(previousCount + 1);
+//    }
 
     @DisplayName("insert test")
     @Test
@@ -47,41 +62,44 @@ class JpaRepositoryTest {
         long previousCount = articleRepository.count();
 
         //  when
-        Article savedArticle = articleRepository.save(Article.of("new title", "new content", "#spring"));
+        Article savedArticle = articleRepository.save(Article.of("new article", "new content", "#spring"));
 
         //  then
         assertThat(articleRepository.count()).isEqualTo(previousCount + 1);
-
     }
 
-//    @DisplayName("update test")
-//    @Test
-//    void givenTestData_whenUpdate_thenWorksFine() {
-//        //  given
-//        Article article = articleRepository.save(Article.of(
-//                "title", "content", "#hashtag"));
-//        System.out.println(articleRepository.findAll());
-//        String updatedHashtag = "#springBoot";
-//        //  when
-//        article.setHashtag(updatedHashtag);
-//
-//        //  then
-//        assertThat(article.getHashtag()).isEqualTo(updatedHashtag);
-//        System.out.println(articleRepository.findAll());
-//    }
 
     @DisplayName("update test")
     @Test
     void givenTestData_whenUpdate_thenWorksFine() {
         //  given
-        Article savedArticle = articleRepository.save(Article.of(
-                "title", "content", "#spring"));
         Article article = articleRepository.findById(1L).orElseThrow();
-        String updateHashtag = "#springBoot";
+        String updatedHashtag = "#springboot";
+        article.setHashtag(updatedHashtag);
+
         //  when
-        article.setHashtag(updateHashtag);
+        Article savedArticle = articleRepository.save(article);
 
         //  then
-        assertThat(article.getHashtag()).isEqualTo(updateHashtag);
+        assertThat(savedArticle).hasFieldOrPropertyWithValue("hashtag", updatedHashtag);
+    }
+
+    @DisplayName("delete test")
+    @Test
+    void givenTestData_whenDelete_thenWorksFine() {
+        // Given
+        Article article = articleRepository.findById(1L).orElseThrow();
+        long previousArticleCount = articleRepository.count();
+        long previousArticleCommentCount = articleCommentRepository.count();
+        int deletedCommentsSize = article.getArticleComments().size();
+
+        // When
+        articleRepository.delete(article);
+
+        // Then
+        assertThat(articleRepository.count()).isEqualTo(previousArticleCount - 1);
+        assertThat(articleCommentRepository.count()).isEqualTo(previousArticleCommentCount - deletedCommentsSize);
+
+
     }
 }
