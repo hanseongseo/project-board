@@ -26,16 +26,16 @@ public class ArticleComment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id;    //  댓글 ID
 
-    @Setter @ManyToOne(optional = false) private Article article;
-    @Setter @Column(nullable = false, length = 500) private String content;
+    @Setter @ManyToOne(optional = false) private Article article;   //  해당 게시글  -> 양방향 바인딩
+    @Setter @Column(nullable = false, length = 500) private String content; //  댓글 본문
 
     //    meta data
-    @CreatedDate @Column(nullable = false) private LocalDateTime createdAt;
-    @CreatedBy @Column(nullable = false, length = 100) private String createdBy;
-    @LastModifiedDate @Column(nullable = false) private LocalDateTime modifiedAt;
-    @LastModifiedBy @Column(nullable = false, length = 100) private String modifiedBy;
+    @CreatedDate @Column(nullable = false) private LocalDateTime createdAt; //  생성일시
+    @CreatedBy @Column(nullable = false, length = 100) private String createdBy; //  생성자
+    @LastModifiedDate @Column(nullable = false) private LocalDateTime modifiedAt;   //  수정일시
+    @LastModifiedBy @Column(nullable = false, length = 100) private String modifiedBy;   //  수정자
 
     protected ArticleComment() {
     }
@@ -46,6 +46,7 @@ public class ArticleComment {
     }
 
     public static ArticleComment of(Article article, String content) {
+
         return new ArticleComment(article, content);
     }
 

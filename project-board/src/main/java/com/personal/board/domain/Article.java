@@ -26,29 +26,29 @@ import java.util.Set;
 @EntityListeners(AuditingEntityListener.class)
 @Entity
 public class Article {
-    @Id
+
+    @Id    //    primary key
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id;    //  게시글 ID
 
-    @Setter @Column(nullable = false, length = 255) private String title;
-    @Setter @Column(nullable = false, length = 10000) private String content;
+    @Setter @Column(nullable = false, length = 255) private String title;   //  제목
+    @Setter @Column(nullable = false, length = 10000) private String content;   //  본문
 
-    @Setter private String hashtag;
+    @Setter private String hashtag; //  해시태그
 
     //    양방향 바인딩
     @ToString.Exclude
     @OrderBy("id")
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
-    private final Set<ArticleComment> articleComments = new LinkedHashSet<>();
+    public final Set<ArticleComment> articleComments = new LinkedHashSet<>();
 
     //  meta data
-    @CreatedDate @Column(nullable = false) private LocalDateTime createdAt;
-    @CreatedBy @Column(nullable = true, length = 100) private String createdBy;
-    @LastModifiedDate @Column(nullable = false) private LocalDateTime modifiedAt;
-    @LastModifiedBy @Column(nullable = true, length = 100) private String modifiedBy;
+    @CreatedDate @Column(nullable = false) private LocalDateTime createdAt; //  생성일시
+    @CreatedBy @Column(nullable = false, length = 100) private String createdBy; //  생성자
+    @LastModifiedDate @Column(nullable = false) private LocalDateTime modifiedAt;   //  수정일시
+    @LastModifiedBy @Column(nullable = false, length = 100) private String modifiedBy;   //  수정자
 
-    protected Article() {
-    }
+    protected Article() { }
 
     private Article(String title, String content, String hashtag) {
         this.title = title;
@@ -56,6 +56,7 @@ public class Article {
         this.hashtag = hashtag;
     }
 
+    //  팩토리 메소드
     public static Article of(String title, String content, String hashtag) {
         return new Article(title, content, hashtag);
     }
