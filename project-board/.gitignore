@@ -1,3 +1,6 @@
+# Query dsl
+src/main/generated
+
 HELP.md
 .gradle
 build/
