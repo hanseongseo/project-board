@@ -1,5 +1,5 @@
 # Query dsl
-src/main/generated
+/src/main/generated
 
 HELP.md
 .gradle
