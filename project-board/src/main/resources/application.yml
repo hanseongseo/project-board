@@ -25,14 +25,6 @@ spring:
   data.rest:
     base-path: /api
     detection-strategy: annotated
-
----
-
-spring:
-  config.activate.on-profile: testdb
-  datasource:
-    url: jdbc:h2:mem:board;mode=mysql
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  jpa.hibernate.ddl-auto: create
-  sql.init.mode: always
-  test.database.replace: none
+  h2:
+    console:
+      enabled: true
