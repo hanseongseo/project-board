@@ -25,6 +25,3 @@ spring:
   data.rest:
     base-path: /api
     detection-strategy: annotated
-  h2:
-    console:
-      enabled: true
