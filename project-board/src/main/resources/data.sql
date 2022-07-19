@@ -1,5 +1,5 @@
 insert into user_account (user_id, user_password, nickname, email, memo, created_at, created_by, modified_at, modified_by) values
-    ('uno', 'asdf1234', 'Uno', 'uno@mail.com', 'I am Uno.', now(), 'uno', now(), 'uno')
+    ('seeman94', 'abcd1234', 'Hanseong', 'seeman94@naver.com', 'I am Uno.', now(), 'seeman94', now(), 'seeman94')
 ;
 insert into article (title, content, hashtag, created_by, modified_by, created_at, modified_at) values
                                                                                                     ('Quisque ut erat.', 'Vestibulum quam sapien, varius ut, blandit non, interdum in, ante. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Duis faucibus accumsan odio. Curabitur convallis.
