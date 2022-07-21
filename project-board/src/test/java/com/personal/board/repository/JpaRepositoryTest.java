@@ -2,6 +2,7 @@ package com.personal.board.repository;
 
 import com.personal.board.config.JpaConfig;
 import com.personal.board.domain.Article;
+import com.personal.board.domain.UserAccount;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,52 +22,45 @@ class JpaRepositoryTest {
 
     private final ArticleRepository articleRepository;
     private final ArticleCommentRepository articleCommentRepository;
+    private final UserAccountRepository userAccountRepository;
 
     public JpaRepositoryTest(
             @Autowired ArticleRepository articleRepository,
-            @Autowired ArticleCommentRepository articleCommentRepository) {
+            @Autowired ArticleCommentRepository articleCommentRepository,
+            @Autowired UserAccountRepository userAccountRepository) {
         this.articleRepository = articleRepository;
         this.articleCommentRepository = articleCommentRepository;
+
+        this.userAccountRepository = userAccountRepository;
     }
 
     @DisplayName("select test")
     @Test
     void givenTestData_whenSelecting_thenWorksFine() {
         //  given
-        List<Article> articles = articleRepository.findAll();
 
         //  when
-        assertThat(articles).isNotNull().hasSize(123);
+        List<Article> articles = articleRepository.findAll();
 
         //  then
+        assertThat(articles.size()).isEqualTo(articleRepository.count());
+        assertThat(articles).isNotNull().hasSize(123);
     }
-
-//    @DisplayName("insert test")
-//    @Test
-//    void givenTestData_whenInsert_thenWorksFine() {
-//        //  given
-//        long previousCount = articleRepository.count();
-//
-//        //  when
-//        Article savedArticle = articleRepository.save(Article.of("new title", "new content", "#spring"));
-//
-//        //  then
-//        assertThat(articleRepository.count()).isEqualTo(previousCount + 1);
-//    }
 
     @DisplayName("insert test")
     @Test
     void givenTestData_whenInsert_thenWorksFine() {
         //  given
         long previousCount = articleRepository.count();
+        UserAccount userAccount = userAccountRepository.save(UserAccount.of("uno", "pw", null, null, null));
+        Article article = articleRepository.save(Article.of(userAccount, "new article", "new content", "#spring"));
 
         //  when
-        Article savedArticle = articleRepository.save(Article.of("new article", "new content", "#spring"));
+        articleRepository.save(article);
 
         //  then
         assertThat(articleRepository.count()).isEqualTo(previousCount + 1);
     }
-
 
     @DisplayName("update test")
     @Test
@@ -98,7 +92,5 @@ class JpaRepositoryTest {
         // Then
         assertThat(articleRepository.count()).isEqualTo(previousArticleCount - 1);
         assertThat(articleCommentRepository.count()).isEqualTo(previousArticleCommentCount - deletedCommentsSize);
-
-
     }
 }
