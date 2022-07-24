@@ -1,16 +1,15 @@
 package com.personal.board.service;
 
-import com.personal.board.DTO.ArticleDto;
-import com.personal.board.DTO.ArticleUpdateDto;
+import com.personal.board.dto.ArticleDto;
+import com.personal.board.dto.ArticleUpdateDto;
 import com.personal.board.domain.type.SearchType;
+import com.personal.board.dto.ArticleWithCommentsDto;
 import com.personal.board.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Transactional
@@ -20,7 +19,7 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
 
     @Transactional(readOnly = true)
-    public Page<ArticleDto> searchArticles(SearchType title, String search_keyword) {
+    public Page<ArticleDto> searchArticles(SearchType title, String search_keyword, Pageable pageable) {
         return Page.empty();
     }
 
@@ -36,5 +35,12 @@ public class ArticleService {
     }
 
     public void deleteArticle(long articleId) {
+    }
+
+    public ArticleWithCommentsDto getArticle(Long articleId) {
+        return null;
+    }
+
+    public void updateArticle(ArticleDto dto) {
     }
 }

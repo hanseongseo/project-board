@@ -20,7 +20,7 @@ public  class ArticleComment extends AuditingFields {   //  metaData, @EntityLis
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;    //  댓글 ID
 
-    @Setter @ManyToOne(optional = false) private UserAccount userAccount;
+    @Setter @ManyToOne(optional = false) @JoinColumn(name = "userId") private UserAccount userAccount;
 
     @Setter @ManyToOne(optional = false) private Article article;   //  해당 게시글  -> 양방향 바인딩
     @Setter @Column(nullable = false, length = 500) private String content; //  댓글 본문

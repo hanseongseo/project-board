@@ -1,4 +1,4 @@
-package com.personal.board.DTO;
+package com.personal.board.dto;
 
 public record ArticleUpdateDto(String title, String content, String hashtag) {
 
